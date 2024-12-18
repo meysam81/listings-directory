@@ -9,7 +9,7 @@ strict: true
 extra:
   social:
     - icon: fontawesome/brands/docker
-      link: https://github.com/orgs/meysam81/packages?repo_name=listings-directory
+      link: https://github.com/meysam81?tab=packages&repo_name=listings-directory
 theme:
   logo: static/favicon.ico
   favicon: static/favicon.ico
