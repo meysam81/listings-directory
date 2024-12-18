@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "vite": "^5.2.11",
+    "vite-plugin-html": "^3.2.2",
+    "vite-plugin-minify": "^2.1.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.2.0",
+    "@types/bun": "latest",
+    "eslint": "^9.2.0",
+    "globals": "^15.2.0"
+  },
+  "module": "index.js",
+  "name": "listings-directory",
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "type": "module"
+}

@@ -1,0 +1,16 @@
+{
+  "dev": [
+    {
+      "icon_url": "https://static-00.iconduck.com/assets.00/prometheus-icon-511x512-1vmxbcxr.png",
+      "label": "Prometheus dev",
+      "url": "https://prometheus.dev.example.com"
+    }
+  ],
+  "prod": [
+    {
+      "icon_url": "https://static-00.iconduck.com/assets.00/prometheus-icon-511x512-1vmxbcxr.png",
+      "label": "Prometheus prod",
+      "url": "https://prometheus.example.com"
+    }
+  ]
+}
