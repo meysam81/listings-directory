@@ -7,5 +7,5 @@ serve:
 build:
   bun run build
 
-docs:
+mkdocs:
   mkdocs serve

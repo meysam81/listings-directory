@@ -31,8 +31,12 @@ jobs:
         uses: meysam81/build-docker@main
         with:
           cosign: true
+          dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
+          dockerhub-password: ${{ secrets.DOCKERHUB_PASSWORD }}
           image-name: ghcr.io/${{ github.repository }}
           image-extra-tags: |
+            meysam81/${{ github.event.repository.name }}:${{ github.run_id }}
+            meysam81/${{ github.event.repository.name }}:latest
             ghcr.io/${{ github.repository }}:${{ github.run_id }}
             ghcr.io/${{ github.repository }}:latest
           kubescape: true
@@ -77,8 +81,12 @@ jobs:
         uses: meysam81/build-docker@main
         with:
           cosign: true
+          dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
+          dockerhub-password: ${{ secrets.DOCKERHUB_PASSWORD }}
           image-name: ghcr.io/${{ github.repository }}
-          image-extra-tags: ghcr.io/${{ github.repository }}:${{ needs.release-please.outputs.tag_name }}
+          image-extra-tags: |
+            meysam81/${{ github.event.repository.name }}:${{ needs.release-please.outputs.tag_name }}
+            ghcr.io/${{ github.repository }}:${{ needs.release-please.outputs.tag_name }}
 
   build-docs:
     environment:
