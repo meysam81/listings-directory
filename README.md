@@ -4,5 +4,7 @@
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/meysam81/listings-directory)](https://github.com/meysam81/listings-directory/commits/main/)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/meysam81/listings-directory)](https://github.com/meysam81/listings-directory)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/meysam81/listings-directory/main.svg)](https://results.pre-commit.ci/latest/github/meysam81/listings-directory/main)
+[![Docker Image Size](https://img.shields.io/docker/image-size/meysam81/listings-directory)](https://hub.docker.com/r/meysam81/listings-directory)
+[![Docker Pulls](https://img.shields.io/docker/pulls/meysam81/listings-directory)](https://hub.docker.com/r/meysam81/listings-directory)
 
 Docs: <https://meysam81.github.io/listings-directory/>

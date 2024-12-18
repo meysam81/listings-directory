@@ -5,6 +5,13 @@ hide:
 
 # Listings Directory
 
+[![GitHub repo size](https://img.shields.io/github/repo-size/meysam81/listings-directory)](https://github.com/meysam81/listings-directory)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/meysam81/listings-directory)](https://github.com/meysam81/listings-directory/commits/main/)
+[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/meysam81/listings-directory)](https://github.com/meysam81/listings-directory)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/meysam81/listings-directory/main.svg)](https://results.pre-commit.ci/latest/github/meysam81/listings-directory/main)
+[![Docker Image Size](https://img.shields.io/docker/image-size/meysam81/listings-directory)](https://hub.docker.com/r/meysam81/listings-directory)
+[![Docker Pulls](https://img.shields.io/docker/pulls/meysam81/listings-directory)](https://hub.docker.com/r/meysam81/listings-directory)
+
 This is a Vanilla JS application that is built to provide
 a listing directory for pages and links, possibly admin
 pages that are shown to your organization personnel only.
@@ -49,3 +56,11 @@ very useful in a Kubernetes setup with probes.
   ![Demo Screenshot](/static/listings-demo.png){ loading=lazy }
   <figcaption>Demo Screenshot</figcaption>
 </figure>
+
+## Verify Docker Images
+
+```shell title="" linenums="0"
+cosign verify ghcr.io/meysam81/listings-directory:main \
+  --certificate-identity-regexp "https://github\.com/meysam81/listings-directory/.+" \
+  --certificate-oidc-issuer "https://token.actions.githubusercontent.com"
+```
