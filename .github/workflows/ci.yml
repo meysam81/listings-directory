@@ -29,6 +29,7 @@ jobs:
       - name: Build docker
         uses: meysam81/build-docker@main
         with:
+          cosign: true
           image-name: ghcr.io/${{ github.repository }}
           image-extra-tags: |
             ghcr.io/${{ github.repository }}:${{ github.run_id }}
@@ -43,6 +44,7 @@ jobs:
       - name: Build docker
         uses: meysam81/build-docker@main
         with:
+          cosign: true
           image-name: ghcr.io/${{ github.repository }}
           kubescape: true
           scout-comment-pr: true
@@ -73,5 +75,52 @@ jobs:
       - name: Build docker
         uses: meysam81/build-docker@main
         with:
+          cosign: true
           image-name: ghcr.io/${{ github.repository }}
           image-extra-tags: ghcr.io/${{ github.repository }}:${{ needs.release-please.outputs.tag_name }}
+
+  build-docs:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      attestations: write
+      contents: read
+      id-token: write
+      pages: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+      - name: Cache mkdocs-material
+        uses: actions/cache@v4
+        with:
+          key: mkdocs-material-${{ hashFiles('requirements.txt') }}
+          path: .cache
+          restore-keys: |
+            mkdocs-material-
+      - name: Install dependencies
+        run: |
+          pip install -U pip -r requirements.txt
+          sudo apt-get install -y libcairo2-dev libfreetype6-dev libffi-dev libjpeg-dev libpng-dev libz-dev pngquant
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        name: Build the site
+        run: mkdocs build
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: build-${{ github.ref_name }}-${{ github.run_id }}
+          path: site
+      - id: deployment
+        name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: build-${{ github.ref_name }}-${{ github.run_id }}

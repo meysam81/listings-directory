@@ -6,3 +6,6 @@ serve:
 
 build:
   bun run build
+
+docs:
+  mkdocs serve

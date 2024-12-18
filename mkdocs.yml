@@ -1,0 +1,137 @@
+---
+docs_dir: docs
+edit_uri: blob/main/docs/
+repo_url: https://github.com/meysam81/listings-directory
+site_dir: site
+site_name: Listings Directory
+site_url: https://didactic-adventure-m62g7pw.pages.github.io
+strict: true
+extra:
+  social:
+    - icon: fontawesome/brands/docker
+      link: https://github.com/orgs/meysam81/packages?repo_name=listings-directory
+theme:
+  # logo: assets/logo.webp
+  # favicon: assets/favicon.ico
+  features:
+    - announce.dismiss
+    - content.action.edit
+    - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    - content.code.select
+    - content.tabs.link
+    - content.tooltips
+    - content.footnote.tooltips
+    - header.autohide
+    - navigation.expand
+    - navigation.footer
+    - navigation.indexes
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    # - navigation.instant.preview
+    - navigation.path
+    - navigation.prune
+    - navigation.sections
+    # - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    # - toc.follow
+    # - toc.integrate
+  font:
+    code: Roboto Mono
+    text: Roboto
+  icon:
+    repo: fontawesome/brands/github
+  language: en
+  name: material
+  palette:
+    - media: (prefers-color-scheme)
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - accent: red
+      media: "(prefers-color-scheme: light)"
+      primary: blue grey
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - accent: red
+      media: "(prefers-color-scheme: dark)"
+      primary: blue grey
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+plugins:
+  - search:
+      lang: en
+  - minify:
+      minify_html: true
+      minify_js: true
+      minify_css: true
+      htmlmin_opts:
+        remove_comments: true
+  - tags
+  - git-revision-date-localized:
+      enable_creation_date: true
+      enabled: !ENV [CI, false]
+      type: date
+      fallback_to_build_date: true
+  - git-committers:
+      repository: meysam81/listings-directory
+      branch: main
+      token: !ENV [GITHUB_TOKEN, ""]
+      enabled: !ENV [CI, false]
+  - glightbox:
+      touchNavigation: true
+      loop: false
+      effect: zoom
+      slide_effect: slide
+      width: 100%
+      height: auto
+      zoomable: true
+      draggable: true
+      skip_classes:
+        - custom-skip-class-name
+      auto_caption: false
+      caption_position: bottom
+      background: white
+      shadow: true
+      manual: false
+repo_name: meysam81/listings-directory
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - attr_list
+  - markdown.extensions.abbr
+  - markdown.extensions.attr_list
+  - markdown.extensions.def_list
+  - markdown.extensions.footnotes
+  - markdown.extensions.md_in_html
+  - markdown.extensions.tables
+  - md_in_html
+  - pymdownx.betterem
+  - pymdownx.blocks.caption
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      use_pygments: true
+      pygments_lang_class: true
+      auto_title: true
+      linenums: true
+      linenums_style: pymdownx-inline
+      anchor_linenums: true
+      line_spans: __span
