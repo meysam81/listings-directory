@@ -11,8 +11,8 @@ extra:
     - icon: fontawesome/brands/docker
       link: https://github.com/orgs/meysam81/packages?repo_name=listings-directory
 theme:
-  # logo: assets/logo.webp
-  # favicon: assets/favicon.ico
+  logo: static/favicon.ico
+  favicon: static/favicon.ico
   features:
     - announce.dismiss
     - content.action.edit
@@ -55,16 +55,16 @@ theme:
       toggle:
         icon: material/brightness-auto
         name: Switch to light mode
-    - accent: red
+    - accent: cyan
       media: "(prefers-color-scheme: light)"
-      primary: blue grey
+      primary: deep orange
       scheme: default
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
-    - accent: red
+    - accent: cyan
       media: "(prefers-color-scheme: dark)"
-      primary: blue grey
+      primary: deep orange
       scheme: slate
       toggle:
         icon: material/brightness-4
