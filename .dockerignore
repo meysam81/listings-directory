@@ -1,0 +1,7 @@
+*
+!public
+!src
+!bun.lockb
+!package*.json
+!index.html
+!vite.config.js
