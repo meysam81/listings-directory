@@ -45,7 +45,7 @@ Thank you for your interest in contributing to the Listings Directory project! W
      ```bash
      bun run dev
      ```
-   - Open your browser and navigate to `http://localhost:3000`.
+   - Open your browser and navigate to `http://localhost:8080`.
 
 ## How to Contribute
 
