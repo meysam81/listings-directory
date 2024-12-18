@@ -53,7 +53,7 @@ very useful in a Kubernetes setup with probes.
 ## Demo
 
 <figure markdown="span">
-  ![Demo Screenshot](/static/listings-demo.png){ loading=lazy }
+  ![Demo Screenshot](./static/listings-demo.png){ loading=lazy }
   <figcaption>Demo Screenshot</figcaption>
 </figure>
 
