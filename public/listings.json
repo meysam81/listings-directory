@@ -1,16 +1,20 @@
 {
-  "dev": [
+  "code": [
     {
-      "icon_url": "https://static-00.iconduck.com/assets.00/prometheus-icon-511x512-1vmxbcxr.png",
-      "label": "Prometheus dev",
-      "url": "https://prometheus.dev.example.com"
+      "icon_url": "https://github.com/fluidicon.png",
+      "label": "Source Code",
+      "url": "https://github.com/meysam81/listings-directory"
+    },
+    {
+      "label": "Author",
+      "url": "https://github.com/meysam81"
     }
   ],
-  "prod": [
+  "docs": [
     {
-      "icon_url": "https://static-00.iconduck.com/assets.00/prometheus-icon-511x512-1vmxbcxr.png",
-      "label": "Prometheus prod",
-      "url": "https://prometheus.example.com"
+      "icon_url": "/favicon.ico",
+      "label": "Documentation",
+      "url": "https://meysam81.github.io/listings-directory/"
     }
   ]
 }

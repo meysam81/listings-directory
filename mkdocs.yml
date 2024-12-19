@@ -123,10 +123,13 @@ markdown_extensions:
   - markdown.extensions.md_in_html
   - markdown.extensions.tables
   - md_in_html
+  - footnotes
   - pymdownx.betterem
   - pymdownx.blocks.caption
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.snippets:
+      url_download: !ENV [URL_DOWNLOAD, true]
   - pymdownx.highlight:
       use_pygments: true
       pygments_lang_class: true

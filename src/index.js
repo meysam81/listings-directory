@@ -9,7 +9,7 @@ function toggleDarkMode() {
 function createEnvironmentTabs(environments) {
   var tabContainer = document.getElementById("tabContainer");
   var tabsHtml = environments
-    .map(function (env, index) {
+    .map(function renderEnvironmentButton(env, index) {
       return (
         '<button class="tab-button px-4 py-2 rounded-md ' +
         (index == 0
@@ -28,9 +28,9 @@ function createEnvironmentTabs(environments) {
   tabContainer.classList.remove("hidden");
 
   var tabButtons = tabContainer.querySelectorAll(".tab-button");
-  tabButtons.forEach(function (button) {
-    button.addEventListener("click", function () {
-      tabButtons.forEach(function (btn) {
+  tabButtons.forEach(function tabButtonEventListener(button) {
+    button.addEventListener("click", function tabButtonHandler() {
+      tabButtons.forEach(function renderTabButton(btn) {
         btn.classList.remove("bg-blue-500", "text-white");
         btn.classList.add(
           "bg-gray-200",
@@ -53,21 +53,31 @@ function createEnvironmentTabs(environments) {
   });
 }
 
+function imageHtml(item) {
+  if (!item.icon_url) {
+    item.icon_url = "/default.png"
+  }
+  var iconHtml =
+    '<img src="' +
+    item.icon_url +
+    '" alt="' +
+    item.label +
+    '" class="w-12 h-12 rounded-full">';
+
+  return iconHtml;
+}
+
 function renderListings(listings) {
   var listingsContainer = document.getElementById("listingsContainer");
 
   var listingsHtml = listings
-    .map(function (item) {
+    .map(function renderListing(item) {
       return (
         '<a href="' +
         item.url +
         '" target="_blank" class="block">' +
         '<div class="flex items-center space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">' +
-        '<img src="' +
-        item.icon_url +
-        '" alt="' +
-        item.label +
-        '" class="w-12 h-12 rounded-full">' +
+        imageHtml(item) +
         "<div>" +
         '<h3 class="text-lg font-semibold text-gray-800 dark:text-white">' +
         item.label +
