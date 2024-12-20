@@ -1,11 +1,3 @@
-function toggleDarkMode() {
-  document.documentElement.classList.toggle("dark");
-  var isDarkMode = document.documentElement.classList.contains("dark");
-  localStorage.setItem("darkMode", isDarkMode);
-
-  setDarkModeButtonicon();
-}
-
 function createEnvironmentTabs(environments) {
   var tabContainer = document.getElementById("tabContainer");
   var tabsHtml = environments
@@ -95,7 +87,7 @@ function renderListings(listings) {
   listingsContainer.innerHTML = listingsHtml;
 }
 
-async function fetchListings() {
+async function setListings() {
   try {
     var response = await fetch("/listings.json");
     window.store.listings = await response.json();
@@ -117,64 +109,45 @@ function listingsUpdatedHandler() {
   }
 }
 
-function initializeDarkMode() {
-  var savedMode = localStorage.getItem("darkMode");
-  if (savedMode == "true") {
-    document.documentElement.classList.add("dark");
-  }
-}
-
-function setDarkModeButtonicon() {
-  var isDarkMode = document.documentElement.classList.contains("dark");
-  var btn = document.getElementById("darkModeToggle");
-  btn.textContent = isDarkMode ? "☀️" : "🌙";
-}
-
-function detectSystemDarkModePreference() {
-  var savedMode = localStorage.getItem("darkMode");
-  if (!savedMode) {
-    var prefersDarkMode = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-    if (prefersDarkMode) {
-      localStorage.setItem("darkMode", "true");
-    }
-  }
-}
-
 function setCurrentYear() {
   var currentYear = window.store.currentYear;
   document.getElementById("currentYear").textContent = `${currentYear} `;
 }
 
+function setDarkMode() {
+  var isDarkMode = window.store.darkMode;
+  var btn = document.getElementById("darkModeToggle");
+  if (isDarkMode) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+  btn.textContent = isDarkMode ? "☀️" : "🌙";
+}
+
+function toggleDarkMode() {
+  window.store.darkMode = !window.store.darkMode;
+}
+
 function main() {
-  document
-    .getElementById("darkModeToggle")
-    .addEventListener("click", toggleDarkMode);
-  detectSystemDarkModePreference();
-  initializeDarkMode();
+  setDarkMode();
   setCurrentYear();
-  setDarkModeButtonicon();
-  fetchListings();
+  setListings();
 }
 
 var store = {
-  darkMode: false,
+  darkMode: window.matchMedia("(prefers-color-scheme: dark)").matches,
   currentYear: new Date().getFullYear(),
   listings: [],
 };
 
 var storeProxy = new Proxy(store, {
-  set: function (store, key, value) {
+  set: function set_(store, key, value) {
     store[key] = value;
-
-    if (key == "listings") {
-      window.dispatchEvent(new Event("listingsUpdated"));
-    }
-
+    window.dispatchEvent(new Event(key + "Updated"));
     return true;
   },
-  get: function (store, key) {
+  get: function get_(store, key) {
     return store[key];
   },
 });
@@ -183,3 +156,7 @@ window.store = storeProxy;
 
 document.addEventListener("DOMContentLoaded", main);
 window.addEventListener("listingsUpdated", listingsUpdatedHandler);
+window.addEventListener("darkModeUpdated", setDarkMode);
+document
+  .getElementById("darkModeToggle")
+  .addEventListener("click", toggleDarkMode);
