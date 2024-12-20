@@ -48,14 +48,14 @@ function createEnvironmentTabs(environments) {
       );
       this.classList.add("bg-blue-500", "text-white");
 
-      renderListings(window.adminListings[this.dataset.env]);
+      renderListings(window.store.listings[this.dataset.env]);
     });
   });
 }
 
 function imageHtml(item) {
   if (!item.icon_url) {
-    item.icon_url = "/default.png"
+    item.icon_url = "/default.png";
   }
   var iconHtml =
     '<img src="' +
@@ -98,18 +98,22 @@ function renderListings(listings) {
 async function fetchListings() {
   try {
     var response = await fetch("/listings.json");
-    window.adminListings = await response.json();
-
-    var environments = Object.keys(window.adminListings);
-
-    if (environments.length == 1) {
-      renderListings(window.adminListings[environments[0]]);
-    } else {
-      createEnvironmentTabs(environments);
-      renderListings(window.adminListings[environments[0]]);
-    }
+    window.store.listings = await response.json();
   } catch (error) {
     console.error("Error fetching listings:", error);
+  }
+}
+
+function listingsUpdatedHandler() {
+  console.debug("Listings updated:", window.store.listings);
+
+  var environments = Object.keys(window.store.listings);
+
+  if (environments.length == 1) {
+    renderListings(window.store.listings[environments[0]]);
+  } else {
+    createEnvironmentTabs(environments);
+    renderListings(window.store.listings[environments[0]]);
   }
 }
 
@@ -139,7 +143,7 @@ function detectSystemDarkModePreference() {
 }
 
 function setCurrentYear() {
-  var currentYear = new Date().getFullYear();
+  var currentYear = window.store.currentYear;
   document.getElementById("currentYear").textContent = `${currentYear} `;
 }
 
@@ -154,4 +158,28 @@ function main() {
   fetchListings();
 }
 
+var store = {
+  darkMode: false,
+  currentYear: new Date().getFullYear(),
+  listings: [],
+};
+
+var storeProxy = new Proxy(store, {
+  set: function (store, key, value) {
+    store[key] = value;
+
+    if (key == "listings") {
+      window.dispatchEvent(new Event("listingsUpdated"));
+    }
+
+    return true;
+  },
+  get: function (store, key) {
+    return store[key];
+  },
+});
+
+window.store = storeProxy;
+
 document.addEventListener("DOMContentLoaded", main);
+window.addEventListener("listingsUpdated", listingsUpdatedHandler);
