@@ -55,7 +55,7 @@ repos:
         stages: [commit-msg]
         additional_dependencies: ["@commitlint/config-conventional"]
   - repo: https://github.com/eslint/eslint
-    rev: v9.21.0
+    rev: v9.22.0
     hooks:
       - id: eslint
         args:
