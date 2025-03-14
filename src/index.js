@@ -62,7 +62,21 @@ function imageHtml(item) {
 function renderListings(listings) {
   var listingsContainer = document.getElementById("listingsContainer");
 
-  var listingsHtml = listings
+  // Create a copy of the array for sorting
+  var sortedListings = [...listings];
+
+  // Apply sorting based on current sort state
+  if (window.store.sortState === "asc") {
+    sortedListings.sort(function compareAsc(a, b) {
+      return a.label.localeCompare(b.label);
+    });
+  } else if (window.store.sortState === "desc") {
+    sortedListings.sort(function compareDesc(a, b) {
+      return b.label.localeCompare(a.label);
+    });
+  }
+
+  var listingsHtml = sortedListings
     .map(function renderListing(item) {
       return (
         '<a href="' +
@@ -129,9 +143,53 @@ function toggleDarkMode() {
   window.store.darkMode = !window.store.darkMode;
 }
 
+function setSortButton() {
+  var sortState = window.store.sortState;
+  var btn = document.getElementById("sortButton");
+
+  if (sortState === "asc") {
+    btn.innerHTML = "↓";
+    btn.title = "Sorted ascending - click to sort descending";
+    btn.setAttribute("aria-label", "Sorted ascending - click to sort descending");
+  } else if (sortState === "desc") {
+    btn.innerHTML = "↑";
+    btn.title = "Sorted descending - click to turn off sorting";
+    btn.setAttribute("aria-label", "Sorted descending - click to turn off sorting");
+  } else {
+    btn.innerHTML = "⊿";
+    btn.title = "Sorting off - click to sort ascending";
+    btn.setAttribute("aria-label", "Sorting off - click to sort ascending");
+  }
+}
+
+function toggleSortState() {
+  var currentState = window.store.sortState;
+
+  if (currentState === "asc") {
+    window.store.sortState = "desc";
+  } else if (currentState === "desc") {
+    window.store.sortState = "none";
+  } else {
+    window.store.sortState = "asc";
+  }
+}
+
+function sortStateUpdatedHandler() {
+  setSortButton();
+
+  // Re-render with the current environment's listings
+  var environments = Object.keys(window.store.listings);
+  if (environments.length > 0) {
+    var activeTab = document.querySelector(".tab-button.bg-blue-500");
+    var env = activeTab ? activeTab.dataset.env : environments[0];
+    renderListings(window.store.listings[env]);
+  }
+}
+
 function main() {
   setDarkMode();
   setCurrentYear();
+  setSortButton();
   setListings();
 }
 
@@ -139,6 +197,7 @@ var store = {
   darkMode: window.matchMedia("(prefers-color-scheme: dark)").matches,
   currentYear: new Date().getFullYear(),
   listings: [],
+  sortState: "asc", // Default sort state: ascending
 };
 
 var storeProxy = new Proxy(store, {
@@ -157,6 +216,11 @@ window.store = storeProxy;
 document.addEventListener("DOMContentLoaded", main);
 window.addEventListener("listingsUpdated", listingsUpdatedHandler);
 window.addEventListener("darkModeUpdated", setDarkMode);
+window.addEventListener("sortStateUpdated", sortStateUpdatedHandler);
+
 document
   .getElementById("darkModeToggle")
   .addEventListener("click", toggleDarkMode);
+document
+  .getElementById("sortButton")
+  .addEventListener("click", toggleSortState);
