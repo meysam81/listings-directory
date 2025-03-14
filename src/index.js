@@ -64,11 +64,11 @@ function renderListings(listings) {
 
   var sortedListings = [...listings];
 
-  if (window.store.sortState === "asc") {
+  if (window.store.sortState == "asc") {
     sortedListings.sort(function compareAsc(a, b) {
       return a.label.localeCompare(b.label);
     });
-  } else if (window.store.sortState === "desc") {
+  } else if (window.store.sortState == "desc") {
     sortedListings.sort(function compareDesc(a, b) {
       return b.label.localeCompare(a.label);
     });
@@ -145,11 +145,11 @@ function setSortButton() {
   var sortState = window.store.sortState;
   var btn = document.getElementById("sortButton");
 
-  if (sortState === "asc") {
+  if (sortState == "asc") {
     btn.innerHTML = '<img src="/sort-asc.png" alt="Sorted ascending" class="w-5 h-5 rounded-full">';
     btn.title = "Sorted ascending - click to sort descending";
     btn.setAttribute("aria-label", "Sorted ascending - click to sort descending");
-  } else if (sortState === "desc") {
+  } else if (sortState == "desc") {
     btn.innerHTML = '<img src="/sort-desc.png" alt="Sorted descending" class="w-5 h-5 rounded-full">';
     btn.title = "Sorted descending - click to turn off sorting";
     btn.setAttribute("aria-label", "Sorted descending - click to turn off sorting");
@@ -163,9 +163,9 @@ function setSortButton() {
 function toggleSortState() {
   var currentState = window.store.sortState;
 
-  if (currentState === "asc") {
+  if (currentState == "asc") {
     window.store.sortState = "desc";
-  } else if (currentState === "desc") {
+  } else if (currentState == "desc") {
     window.store.sortState = "none";
   } else {
     window.store.sortState = "asc";
@@ -175,12 +175,47 @@ function toggleSortState() {
 function sortStateUpdatedHandler() {
   setSortButton();
 
-  // Re-render with the current environment's listings
   var environments = Object.keys(window.store.listings);
   if (environments.length > 0) {
     var activeTab = document.querySelector(".tab-button.bg-blue-500");
     var env = activeTab ? activeTab.dataset.env : environments[0];
     renderListings(window.store.listings[env]);
+  }
+}
+
+function loadStoreFromLocalStorage() {
+  const savedStore = localStorage.getItem('listingsDirectoryStore');
+  if (savedStore) {
+    try {
+      const parsedStore = JSON.parse(savedStore);
+      return {
+        darkMode: parsedStore.darkMode != undefined ? parsedStore.darkMode : window.matchMedia("(prefers-color-scheme: dark)").matches,
+        currentYear: new Date().getFullYear(),
+        listings: parsedStore.listings || [],
+        sortState: parsedStore.sortState || "asc",
+      };
+    } catch (e) {
+      console.error("Error parsing localStorage:", e);
+    }
+  }
+
+  return {
+    darkMode: window.matchMedia("(prefers-color-scheme: dark)").matches,
+    currentYear: new Date().getFullYear(),
+    listings: [],
+    sortState: "asc",
+  };
+}
+
+function saveStoreToLocalStorage(store) {
+  try {
+    const storeToSave = {
+      darkMode: store.darkMode,
+      sortState: store.sortState,
+    };
+    localStorage.setItem('listingsDirectoryStore', JSON.stringify(storeToSave));
+  } catch (e) {
+    console.error("Error saving to localStorage:", e);
   }
 }
 
@@ -191,16 +226,16 @@ function main() {
   setListings();
 }
 
-var store = {
-  darkMode: window.matchMedia("(prefers-color-scheme: dark)").matches,
-  currentYear: new Date().getFullYear(),
-  listings: [],
-  sortState: "asc",
-};
+var store = loadStoreFromLocalStorage();
 
 var storeProxy = new Proxy(store, {
   set: function set_(store, key, value) {
     store[key] = value;
+
+    if (key != 'listings' && key != 'currentYear') {
+      saveStoreToLocalStorage(store);
+    }
+
     window.dispatchEvent(new Event(key + "Updated"));
     return true;
   },
