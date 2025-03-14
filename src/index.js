@@ -82,11 +82,11 @@ function renderListings(listings) {
         '" target="_blank" class="block">' +
         '<div class="flex items-center space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">' +
         imageHtml(item) +
-        "<div>" +
-        '<h3 class="text-lg font-semibold text-gray-800 dark:text-white">' +
+        '<div class="min-w-0 flex-1">' +
+        '<h3 class="text-lg font-semibold text-gray-800 dark:text-white truncate">' +
         item.label +
         "</h3>" +
-        '<p class="text-gray-600 dark:text-gray-300">' +
+        '<p class="text-gray-600 dark:text-gray-300 truncate">' +
         item.url +
         "</p>" +
         "</div>" +
