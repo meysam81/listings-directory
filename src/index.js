@@ -62,10 +62,8 @@ function imageHtml(item) {
 function renderListings(listings) {
   var listingsContainer = document.getElementById("listingsContainer");
 
-  // Create a copy of the array for sorting
   var sortedListings = [...listings];
 
-  // Apply sorting based on current sort state
   if (window.store.sortState === "asc") {
     sortedListings.sort(function compareAsc(a, b) {
       return a.label.localeCompare(b.label);
@@ -148,15 +146,15 @@ function setSortButton() {
   var btn = document.getElementById("sortButton");
 
   if (sortState === "asc") {
-    btn.innerHTML = "↓";
+    btn.innerHTML = '<img src="/sort-asc.png" alt="Sorted ascending" class="w-5 h-5 rounded-full">';
     btn.title = "Sorted ascending - click to sort descending";
     btn.setAttribute("aria-label", "Sorted ascending - click to sort descending");
   } else if (sortState === "desc") {
-    btn.innerHTML = "↑";
+    btn.innerHTML = '<img src="/sort-desc.png" alt="Sorted descending" class="w-5 h-5 rounded-full">';
     btn.title = "Sorted descending - click to turn off sorting";
     btn.setAttribute("aria-label", "Sorted descending - click to turn off sorting");
   } else {
-    btn.innerHTML = "⊿";
+    btn.innerHTML = '<img src="/sort-neutral.png" alt="Sorting off" class="w-5 h-5 rounded-full">';
     btn.title = "Sorting off - click to sort ascending";
     btn.setAttribute("aria-label", "Sorting off - click to sort ascending");
   }
@@ -197,7 +195,7 @@ var store = {
   darkMode: window.matchMedia("(prefers-color-scheme: dark)").matches,
   currentYear: new Date().getFullYear(),
   listings: [],
-  sortState: "asc", // Default sort state: ascending
+  sortState: "asc",
 };
 
 var storeProxy = new Proxy(store, {
