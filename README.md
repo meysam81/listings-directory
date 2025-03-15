@@ -1,5 +1,6 @@
 # Listings Directory
 
+[![Renovate](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://developer.mend.io/github/meysam81/listings-directory)
 [![GitHub repo size](https://img.shields.io/github/repo-size/meysam81/listings-directory)](https://github.com/meysam81/listings-directory)
 [![GitHub language count](https://img.shields.io/github/languages/count/meysam81/listings-directory)](https://github.com/meysam81/listings-directory)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/meysam81/listings-directory)](https://github.com/meysam81/listings-directory/commits/main/)
