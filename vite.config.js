@@ -12,7 +12,7 @@ export default defineConfig(({ _, mode }) => {
       rollupOptions: {
         input: {
           main: path.resolve(__dirname, "index.html"),
-          404: path.resolve(__dirname, "public/404.html"),
+          404: path.resolve(__dirname, "index.html"),
         },
         output: {
           manualChunks: undefined,

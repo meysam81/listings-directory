@@ -133,7 +133,7 @@ function listingsUpdatedHandler() {
 }
 
 function setCurrentYear() {
-  document.getElementById("current-year").textContent = `${window.CURRENT_YEAR} `;
+  document.getElementById("current-year").textContent = `${CURRENT_YEAR} `;
 }
 
 function setDarkMode() {
