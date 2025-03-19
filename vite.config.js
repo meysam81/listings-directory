@@ -5,6 +5,9 @@ import { ViteMinifyPlugin } from "vite-plugin-minify";
 export default defineConfig(({ _, mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   return {
+    define: {
+      CURRENT_YEAR: JSON.stringify(new Date().getFullYear()),
+    },
     build: {
       rollupOptions: {
         input: {

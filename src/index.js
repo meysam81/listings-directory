@@ -40,6 +40,8 @@ function createEnvironmentTabs(environments) {
       );
       this.classList.add("bg-blue-500", "text-white");
 
+      window.store.currentTab = this.dataset.env;
+
       renderListings(window.store.listings[this.dataset.env]);
     });
   });
@@ -99,7 +101,7 @@ function renderListings(listings) {
   listingsContainer.innerHTML = listingsHtml;
 }
 
-async function setListings() {
+async function fetchListings() {
   try {
     var response = await fetch("/listings.json");
     window.store.listings = await response.json();
@@ -113,17 +115,25 @@ function listingsUpdatedHandler() {
 
   var environments = Object.keys(window.store.listings);
 
-  if (environments.length == 1) {
-    renderListings(window.store.listings[environments[0]]);
-  } else {
+  if (environments.length > 1) {
     createEnvironmentTabs(environments);
+
+    if (window.store.currentTab && environments.includes(window.store.currentTab)) {
+      var savedTabButton = document.querySelector(`.tab-button[data-env="${window.store.currentTab}"]`);
+      if (savedTabButton) {
+        savedTabButton.click();
+        return;
+      }
+    }
+    document.querySelector('.tab-button').click();
+  } else if (environments.length == 1) {
+    window.store.currentTab = environments[0];
     renderListings(window.store.listings[environments[0]]);
   }
 }
 
 function setCurrentYear() {
-  var currentYear = window.store.currentYear;
-  document.getElementById("currentYear").textContent = `${currentYear} `;
+  document.getElementById("current-year").textContent = `${window.CURRENT_YEAR} `;
 }
 
 function setDarkMode() {
@@ -143,19 +153,16 @@ function toggleDarkMode() {
 
 function setSortButton() {
   var sortState = window.store.sortState;
-  var btn = document.getElementById("sortButton");
+  var btn = document.getElementById("sort-button");
 
   if (sortState == "asc") {
-    btn.innerHTML = '<img src="/sort-asc.png" alt="Sorted ascending" class="w-5 h-5 rounded-full">';
-    btn.title = "Sorted ascending - click to sort descending";
+    btn.innerHTML = sortIcons.asc;
     btn.setAttribute("aria-label", "Sorted ascending - click to sort descending");
   } else if (sortState == "desc") {
-    btn.innerHTML = '<img src="/sort-desc.png" alt="Sorted descending" class="w-5 h-5 rounded-full">';
-    btn.title = "Sorted descending - click to turn off sorting";
+    btn.innerHTML = sortIcons.desc;
     btn.setAttribute("aria-label", "Sorted descending - click to turn off sorting");
   } else {
-    btn.innerHTML = '<img src="/sort-neutral.png" alt="Sorting off" class="w-5 h-5 rounded-full">';
-    btn.title = "Sorting off - click to sort ascending";
+    btn.innerHTML = sortIcons.neutral;
     btn.setAttribute("aria-label", "Sorting off - click to sort ascending");
   }
 }
@@ -179,6 +186,7 @@ function sortStateUpdatedHandler() {
   if (environments.length > 0) {
     var activeTab = document.querySelector(".tab-button.bg-blue-500");
     var env = activeTab ? activeTab.dataset.env : environments[0];
+    window.store.currentTab = env;
     renderListings(window.store.listings[env]);
   }
 }
@@ -190,9 +198,9 @@ function loadStoreFromLocalStorage() {
       const parsedStore = JSON.parse(savedStore);
       return {
         darkMode: parsedStore.darkMode != undefined ? parsedStore.darkMode : window.matchMedia("(prefers-color-scheme: dark)").matches,
-        currentYear: new Date().getFullYear(),
         listings: parsedStore.listings || [],
         sortState: parsedStore.sortState || "asc",
+        currentTab: parsedStore.currentTab || '',
       };
     } catch (e) {
       console.error("Error parsing localStorage:", e);
@@ -201,45 +209,51 @@ function loadStoreFromLocalStorage() {
 
   return {
     darkMode: window.matchMedia("(prefers-color-scheme: dark)").matches,
-    currentYear: new Date().getFullYear(),
     listings: [],
     sortState: "asc",
+    currentTab: '',
   };
 }
 
 function saveStoreToLocalStorage(store) {
   try {
-    const storeToSave = {
-      darkMode: store.darkMode,
-      sortState: store.sortState,
-    };
-    localStorage.setItem('listingsDirectoryStore', JSON.stringify(storeToSave));
+    localStorage.setItem('listingsDirectoryStore', JSON.stringify(store));
   } catch (e) {
     console.error("Error saving to localStorage:", e);
   }
+}
+
+var sortIcons = {
+  asc: '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAV0lEQVR4nO2SMQoAIAwD+2tH/XlEcBCRSgpihh5kKZQroWYJCYisnGZ/BFEgIwBZjZ4gCmQEIKvRE0SBjABkNXoChuI8RH0pqd4CW80uuV4eEQzaTGI0HeVscXWNg/R7AAAAAElFTkSuQmCC" alt="Sorted ascending" class="w-5 h-5 rounded-full">',
+  desc: '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAABHElEQVR4nO2Z3QqDMAyF83hzF3M3Yzd7dgWVvYSDMwoVRrHFn/SPnQ8CXtSS08REowghhJTKVUR6EYGimf2aVAIGZecXmyhgIybUnfLpm/0uWx0ghOTvA1vq/t2W1sFeF9cHQnX/ISLzz9qPiLxqEeA6ry5Cow/46v7T4zyszXZNkfhOHrEikcN5lChiLW1mT/oUl05twDE45hNq9ojeB3x1fwycKhwTjwhTFXcxHaw8xlmXdyAlsCJgTYTZYxejooDWnmC3kgrwCFju6+29txR94Mj7PgICqgAUkBkwAif6gMacB7EiMCSa84ACTvQBjTkP+BBnBozAP/WBPsJ8H6nLqPZ8H7UL6J2yHLUPxJjvN/YjyBj/HRBCpC6+JdPIkqnmmRUAAAAASUVORK5CYII=" alt="Sorted descending" class="w-5 h-5 rounded-full">',
+  neutral: '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAaUlEQVR4nN2UwQrAIAxD89c96nF/nSHobcNYFUoDvUmeaaBAZlUAz01z9plBxjuXOQXIEuDLnGKSLXOegniic7WDcAC3wgAYtgNVDAtg2g5MOCnlJqSoJrPotvtzZbd2ci34UTvzbZLqBUWsWbH6WtfbAAAAAElFTkSuQmCC" alt="sorting-arrows" alt="No sorting" class="w-5 h-5 rounded-full">',
 }
 
 function main() {
   setDarkMode();
   setCurrentYear();
   setSortButton();
-  setListings();
+  fetchListings();
 }
 
 var store = loadStoreFromLocalStorage();
+if (store) {
+  saveStoreToLocalStorage(store);
+}
 
 var storeProxy = new Proxy(store, {
-  set: function set_(store, key, value) {
+  set: function setStoreProxy(store, key, value) {
     store[key] = value;
 
-    if (key != 'listings' && key != 'currentYear') {
-      saveStoreToLocalStorage(store);
+    if (key == 'listings') {
+      store.currentTab = store.currentTab || Object.keys(store.listings)[0];
     }
 
+    saveStoreToLocalStorage(store);
     window.dispatchEvent(new Event(key + "Updated"));
     return true;
   },
-  get: function get_(store, key) {
+  get: function getStoreProxy(store, key) {
     return store[key];
   },
 });
