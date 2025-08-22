@@ -132,7 +132,7 @@ jobs:
         name: Build the site
         run: mkdocs build
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           name: build-${{ github.ref_name }}-${{ github.run_id }}
           path: site
