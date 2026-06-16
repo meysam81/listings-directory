@@ -1,3 +1,5 @@
+import "./style.css";
+
 function createEnvironmentTabs(environments) {
   var tabContainer = document.getElementById("tabContainer");
   var tabsHtml = environments
