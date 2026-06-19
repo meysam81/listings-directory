@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.4](https://github.com/meysam81/listings-directory/compare/v1.3.3...v1.3.4) (2026-06-19)
+
+
+### Bug Fixes
+
+* **CI:** tag images with v prefix ([e71d5a2](https://github.com/meysam81/listings-directory/commit/e71d5a2f50603b37b254e2fce669c48a9e9b6d1d))
+
 ## [1.3.3](https://github.com/meysam81/listings-directory/compare/v1.3.2...v1.3.3) (2026-06-19)
 
 
