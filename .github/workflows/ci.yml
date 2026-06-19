@@ -87,8 +87,8 @@ jobs:
           dockerhub-password: ${{ secrets.DOCKERHUB_PASSWORD }}
           image-name: ghcr.io/${{ github.repository }}
           image-extra-tags: |
-            meysam81/${{ github.event.repository.name }}:${{ needs.release-please.outputs.version }}
-            ghcr.io/${{ github.repository }}:${{ needs.release-please.outputs.version }}
+            meysam81/${{ github.event.repository.name }}:v${{ needs.release-please.outputs.version }}
+            ghcr.io/${{ github.repository }}:v${{ needs.release-please.outputs.version }}
           kubescape: true
           kubescape-upload-sarif: true
           metadata-tags: |
