@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.3](https://github.com/meysam81/listings-directory/compare/v1.3.2...v1.3.3) (2026-06-19)
+
+
+### Bug Fixes
+
+* **CI:** replace semantic-release with release-please ([cecaac1](https://github.com/meysam81/listings-directory/commit/cecaac1ad971eeae8adb6aa43f860395cd235003))
+
 ## 1.0.0 (2024-12-19)
 
 
