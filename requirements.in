@@ -7,5 +7,5 @@ mkdocs-glightbox<1
 mkdocs-material[imaging]<10
 mkdocs-minify-plugin<1
 mkdocs-rss-plugin<2
-mkdocs-table-reader-plugin<4
+mkdocs-table-reader-plugin<5
 pymdown-extensions<11
