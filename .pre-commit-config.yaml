@@ -14,7 +14,7 @@ ci:
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c # frozen: v6.0.0
     hooks:
       - id: check-added-large-files
         args: ["--maxkb=800"]
@@ -42,7 +42,6 @@ repos:
       - id: check-builtin-literals
       - id: check-case-conflict
       - id: check-builtin-literals
-      - id: check-byte-order-marker
       - id: check-case-conflict
       - id: check-docstring-first
       - id: check-merge-conflict
@@ -54,7 +53,6 @@ repos:
       - id: destroyed-symlinks
       - id: double-quote-string-fixer
       - id: fix-byte-order-marker
-      - id: fix-encoding-pragma
       - id: forbid-new-submodules
       - id: forbid-submodules
       - id: mixed-line-ending
@@ -63,18 +61,19 @@ repos:
           - --autofix
         exclude: .*kratos/identity-schema.json$
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-    rev: v9.25.0
+    rev: 1d7031e6d0bbfce76e5a625b0cec24fb22e517a0 # frozen: v9.25.0
     hooks:
       - id: commitlint
+        language: node
         stages: [commit-msg]
-        additional_dependencies: ["@commitlint/config-conventional"]
+        additional_dependencies: ["@commitlint/config-conventional@21.2.4"]
   - repo: https://github.com/eslint/eslint
-    rev: v10.5.0
+    rev: de3b672a267e32607db04176ce4775664acb3145 # frozen: v10.5.0
     hooks:
       - id: eslint
         args:
           - --fix
   - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.12
+    rev: 914e7df21a07ef503a81201c76d2b11c789d3fca # frozen: v1.7.12
     hooks:
       - id: actionlint
