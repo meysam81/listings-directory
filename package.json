@@ -16,7 +16,7 @@
   "module": "index.js",
   "name": "listings-directory",
   "peerDependencies": {
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2 || ^6.0.0"
   },
   "scripts": {
     "build": "vite build",
